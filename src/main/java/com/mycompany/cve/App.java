@@ -116,7 +116,7 @@ public class App {
 
 
     public static void main(String[] args) {
-        final int NUMBER_CVE = 100;
+        final int NUMBER_CVE = 500;
         App app = new App(); // App sınıfından bir nesne oluştur
         CustomArrayList allVulnerabilities = app.new CustomArrayList();
         String firstPartOfURL = "https://services.nvd.nist.gov/rest/json/cves/2.0/?resultsPerPage=1000&startIndex=";
@@ -124,7 +124,7 @@ public class App {
         ScoreInfo[] scoreInfos = new ScoreInfo[NUMBER_CVE];
 
         int totalNumber = 0;
-        for (int i = 0; i < 200; i = i + 1_000) {
+        for (int i = 0; i < 12_000; i = i + 1_000) {
             String completeURL = firstPartOfURL + i;
             try {
                 //String json = getJsonFromUrl(completeURL); // URL adresini buraya ekleyin
@@ -400,9 +400,11 @@ public class App {
 
     private static void printScoreInfos(ScoreInfo[] scoreInfos) {
         System.out.println("Total Number of Score Info that will be sorted: " + scoreInfos.length);
-//        for (ScoreInfo scoreInfo : scoreInfos) {
-//            System.out.println(scoreInfo);
-//        }
+        for (ScoreInfo scoreInfo : scoreInfos) {
+            if (scoreInfo == null) {
+                throw new RuntimeException("scoreInfos null değer içermemeli");
+            }
+        }
     }
 }
 
