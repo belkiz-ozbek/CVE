@@ -124,7 +124,7 @@ public class App {
         ScoreInfo[] scoreInfos = new ScoreInfo[NUMBER_CVE];
 
         int totalNumber = 0;
-        for (int i = 0; i < 12_000; i = i + 1_000) {
+        for (int i = 0; i < 700; i = i + 1_000) {
             String completeURL = firstPartOfURL + i;
             try {
                 //String json = getJsonFromUrl(completeURL); // URL adresini buraya ekleyin
@@ -372,10 +372,15 @@ public class App {
         ScoreInfo[] scoreInfosForInsertionSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
         ScoreInfo[] scoreInfosForAvlSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
 
-        System.out.println("QuickSort Started");
-        QuickSort(scoreInfosForQuickSort, 0, scoreInfos.length - 1);
-        System.out.println("QuickSort finished");
-        printResult(scoreInfosForQuickSort, "Quick Sort");
+        AVLTree avlTree = new AVLTree();
+        for (ScoreInfo scoreInfo : scoreInfosForAvlSort) {
+            avlTree.insert(scoreInfo);
+        }
+        avlTree.inOrderTraversal();
+
+        System.out.println("Quick Sort Started");
+        QuickSort(scoreInfosForQuickSort, 0, scoreInfosForQuickSort.length-1);
+        printResult(scoreInfosForQuickSort, "Quick Sort ");
 
         System.out.println("mergeSort Started");
         mergeSort(scoreInfosForMergeSort, 0, scoreInfos.length - 1);

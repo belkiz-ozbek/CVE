@@ -1,4 +1,5 @@
 package com.mycompany.cve;
+
 public class ScoreInfo implements Comparable<ScoreInfo> {
     public String cveId;
     public double baseScore;
@@ -15,21 +16,21 @@ public class ScoreInfo implements Comparable<ScoreInfo> {
     @Override
     public int compareTo(ScoreInfo other) {
         if (this.baseScore > other.baseScore) {
-            return -1; // Büyük baseScore daha yüksek öncelik
+            return 1; // Büyük baseScore daha yüksek öncelik
         } else if (this.baseScore < other.baseScore) {
-            return 1; // Diğer durumda, büyük baseScore daha düşük öncelik
+            return -1; // Diğer durumda, büyük baseScore daha düşük öncelik
         } else {
             // baseScore eşit, impactScore karşılaştırılır
             if (this.impactScore > other.impactScore) {
-                return -1; // Büyük impactScore daha yüksek öncelik
+                return 1; // Büyük impactScore daha yüksek öncelik
             } else if (this.impactScore < other.impactScore) {
-                return 1; // Diğer durumda, büyük impactScore daha düşük öncelik
+                return -1; // Diğer durumda, büyük impactScore daha düşük öncelik
             } else {
                 // baseScore ve impactScore eşit, exploitabilityScore karşılaştırılır
                 if (this.exploitabilityScore > other.exploitabilityScore) {
-                    return -1; // Büyük exploitabilityScore daha yüksek öncelik
+                    return 1; // Büyük exploitabilityScore daha yüksek öncelik
                 } else if (this.exploitabilityScore < other.exploitabilityScore) {
-                    return 1; // Diğer durumda, büyük exploitabilityScore daha düşük öncelik
+                    return -1; // Diğer durumda, büyük exploitabilityScore daha düşük öncelik
                 } else {
                     // Tüm puanlar eşit, daha düşük CVE-ID önceliğe sahiptir.
                     return this.cveId.compareTo(other.cveId);
@@ -38,48 +39,47 @@ public class ScoreInfo implements Comparable<ScoreInfo> {
         }
     }
 
-    public void QuickSort(ScoreInfo ar[], int low, int high){
-        if(low<high){
+    public void QuickSort(ScoreInfo ar[], int low, int high) {
+        if (low < high) {
             int temp = divide(ar, low, high);
-            QuickSort(ar, low, temp-1);
-            QuickSort(ar, temp+1, high);
+            QuickSort(ar, low, temp - 1);
+            QuickSort(ar, temp + 1, high);
         }
     }
-    public int divide(ScoreInfo ar[], int low, int high){
 
-        ScoreInfo pivot=ar[high];
+    public int divide(ScoreInfo ar[], int low, int high) {
 
-        int i= low-1;
+        ScoreInfo pivot = ar[high];
 
-        for(int j=low; j<=high; j++){
-            if(ar[j].baseScore < pivot.baseScore){
+        int i = low - 1;
+
+        for (int j = low; j <= high; j++) {
+            if (ar[j].baseScore < pivot.baseScore) {
                 i++;
-                ScoreInfo temp= ar[i];
-                ar[i]=ar[j];
-                ar[j]=temp;
-            }
-            else if(ar[j].baseScore == pivot.baseScore){
-                if(ar[j].impactScore < pivot.impactScore){
+                ScoreInfo temp = ar[i];
+                ar[i] = ar[j];
+                ar[j] = temp;
+            } else if (ar[j].baseScore == pivot.baseScore) {
+                if (ar[j].impactScore < pivot.impactScore) {
                     i++;
-                    ScoreInfo temp= ar[i];
-                    ar[i]=ar[j];
-                    ar[j]=temp;
-                }
-                else if(ar[j].impactScore == pivot.impactScore){
-                    if(ar[j].exploitabilityScore < pivot.exploitabilityScore){
+                    ScoreInfo temp = ar[i];
+                    ar[i] = ar[j];
+                    ar[j] = temp;
+                } else if (ar[j].impactScore == pivot.impactScore) {
+                    if (ar[j].exploitabilityScore < pivot.exploitabilityScore) {
                         i++;
-                        ScoreInfo temp= ar[i];
-                        ar[i]=ar[j];
-                        ar[j]=temp;
+                        ScoreInfo temp = ar[i];
+                        ar[i] = ar[j];
+                        ar[j] = temp;
                     }
                 }
             }
         }
-        ScoreInfo temp=ar[i+1];
-        ar[i+1]=ar[high];
-        ar[high]=temp;
+        ScoreInfo temp = ar[i + 1];
+        ar[i + 1] = ar[high];
+        ar[high] = temp;
 
-        return i+1;
+        return i + 1;
     }
 
     @Override
