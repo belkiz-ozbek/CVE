@@ -165,48 +165,59 @@ public class App {
 
     }
 
-    public static void QuickSort(ScoreInfo ar[], int low, int high) {
-        if (low < high) {
+     public void QuickSort(ScoreInfo ar[], int low, int high){
+        if(low<high){
             int temp = divide(ar, low, high);
-            QuickSort(ar, low, temp - 1);
-            QuickSort(ar, temp + 1, high);
+            QuickSort(ar, low, temp-1);
+            QuickSort(ar, temp+1, high);
         }
     }
-
-    public static int divide(ScoreInfo ar[], int low, int high) {
-
-        ScoreInfo pivot = ar[high];
-
-        int i = low - 1;
-
-        for (int j = low; j <= high; j++) {
-            if (ar[j].baseScore < pivot.baseScore) {
+    public int divide(ScoreInfo ar[], int low, int high){
+        
+        ScoreInfo pivot=ar[high];
+        
+        int i= low-1;
+        
+        for(int j=low; j<=high; j++){
+            if(ar[j].baseScore < pivot.baseScore){
                 i++;
-                ScoreInfo temp = ar[i];
-                ar[i] = ar[j];
-                ar[j] = temp;
-            } else if (ar[j].baseScore == pivot.baseScore) {
-                if (ar[j].impactScore < pivot.impactScore) {
+                ScoreInfo temp= ar[i];
+                ar[i]=ar[j];
+                ar[j]=temp;
+            }
+            else if(ar[j].baseScore == pivot.baseScore){
+                if(ar[j].impactScore < pivot.impactScore){
                     i++;
-                    ScoreInfo temp = ar[i];
-                    ar[i] = ar[j];
-                    ar[j] = temp;
-                } else if (ar[j].impactScore == pivot.impactScore) {
-                    if (ar[j].exploitabilityScore < pivot.exploitabilityScore) {
+                    ScoreInfo temp= ar[i];
+                    ar[i]=ar[j];
+                    ar[j]=temp;
+                }
+                else if(ar[j].impactScore == pivot.impactScore){
+                    if(ar[j].exploitabilityScore < pivot.exploitabilityScore){
                         i++;
-                        ScoreInfo temp = ar[i];
-                        ar[i] = ar[j];
-                        ar[j] = temp;
+                        ScoreInfo temp= ar[i];
+                        ar[i]=ar[j];
+                        ar[j]=temp;
+                    }
+                    else if(ar[j].exploitabilityScore == pivot.exploitabilityScore){
+                        if(ar[j].cveId.compareTo(pivot.cveId)<0){
+                            i++;
+                            ScoreInfo temp= ar[i];
+                            ar[i]=ar[j];
+                            ar[j]=temp;
+                        }
+                        
                     }
                 }
             }
         }
-        ScoreInfo temp = ar[i + 1];
-        ar[i + 1] = ar[high];
-        ar[high] = temp;
-
-        return i + 1;
+        ScoreInfo temp=ar[i+1];
+        ar[i+1]=ar[high];
+        ar[high]=temp;
+        
+        return i+1;
     }
+    
 
     private static void sortScoreInfos(ScoreInfo[] scoreInfos) {
 
