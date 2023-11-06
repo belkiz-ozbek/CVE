@@ -1,4 +1,3 @@
-
 package com.mycompany.cve;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 
 public class App {
@@ -295,32 +295,107 @@ public class App {
         }
     }
 
+    //heap sort
+    public static void heapSort(ScoreInfo ar[]) {
+        int size = ar.length;
+        for (int i = (size / 2) - 1; i >= 0; i--) {
+            heap(ar, size, i);
+        }
+
+        for (int i = size - 1; i >= 0; i--) {
+            ScoreInfo temp = ar[0];
+            ar[0] = ar[i];
+            ar[i] = temp;
+
+            heap(ar, i, 0);
+        }
+    }
+
+    public static void heap(ScoreInfo ar[], int size, int i) {
+        int big = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < size && ar[left].baseScore > ar[big].baseScore) {
+            big = left;
+        }
+
+        if (left < size && ar[left].baseScore == ar[big].baseScore) {
+            if (ar[left].impactScore > ar[big].impactScore) {
+                big = left;
+            } else if (ar[left].impactScore == ar[big].impactScore) {
+                if (ar[left].exploitabilityScore > ar[big].exploitabilityScore) {
+                    big = left;
+                } else if (ar[left].exploitabilityScore == ar[big].exploitabilityScore) {
+                    if (ar[left].cveId.compareTo(ar[big].cveId) > 0) {
+                        big = left;
+                    }
+                }
+            }
+        }
+
+        if (right < size && ar[right].baseScore > ar[big].baseScore) {
+            big = right;
+        }
+
+        if (right < size && ar[right].baseScore == ar[big].baseScore) {
+            if (right < size && ar[right].impactScore > ar[big].impactScore) {
+                big = right;
+            } else if (right < size && ar[right].impactScore == ar[big].impactScore) {
+                if (right < size && ar[right].exploitabilityScore > ar[big].exploitabilityScore) {
+                    big = right;
+                } else if (right < size && ar[right].exploitabilityScore == ar[big].exploitabilityScore) {
+                    if (ar[right].cveId.compareTo(ar[big].cveId) > 0) {
+                        big = right;
+                    }
+                }
+            }
+        }
+
+        if (big != i) {
+            ScoreInfo temp = ar[i];
+            ar[i] = ar[big];
+            ar[big] = temp;
+
+            heap(ar, size, big);
+        }
+    }
+
 
     private static void sortScoreInfos(ScoreInfo[] scoreInfos) {
 
+
+        ScoreInfo[] scoreInfosForQuickSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
+        ScoreInfo[] scoreInfosForMergeSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
+        ScoreInfo[] scoreInfosForHeapSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
+
+        ScoreInfo[] scoreInfosForInsertionSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
+        ScoreInfo[] scoreInfosForAvlSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
+
         System.out.println("QuickSort Started");
-
-        int low = 0;
-        int high = scoreInfos.length - 1;
-        QuickSort(scoreInfos, low, high);
+        QuickSort(scoreInfosForQuickSort, 0, scoreInfos.length - 1);
         System.out.println("QuickSort finished");
-        System.out.println("***************");
-        System.out.println("***************");
-        System.out.println("***************");
-        System.out.println("Sorted Another Array:");
-        for (ScoreInfo scoreInfo : scoreInfos) {
-            System.out.println(scoreInfo);
-        }
-        System.out.println("*****************************");
-        System.out.println("*****************************");
-        System.out.println("*****************************");
-        System.out.println("Merge Sort Started");
-        mergeSort(scoreInfos, 0, scoreInfos.length - 1);
+        printResult(scoreInfosForQuickSort, "Quick Sort");
 
-        System.out.println("Sorted Score Infos:");
+        System.out.println("mergeSort Started");
+        mergeSort(scoreInfosForMergeSort, 0, scoreInfos.length - 1);
+        printResult(scoreInfosForMergeSort, "Merge Sort");
+
+        System.out.println("Heap Sort Started");
+        heapSort(scoreInfosForHeapSort);
+        printResult(scoreInfosForHeapSort, "Heap Sort");
+
+    }
+
+    private static void printResult(ScoreInfo[] scoreInfos, String algorithm) {
+        System.out.println("***************");
+        System.out.println("Sorted Array, Algorithm: " + algorithm);
         for (ScoreInfo scoreInfo : scoreInfos) {
             System.out.println(scoreInfo);
         }
+        System.out.println("*****************************");
+        System.out.println();
+        System.out.println();
     }
 
     private static void printScoreInfos(ScoreInfo[] scoreInfos) {
@@ -330,6 +405,4 @@ public class App {
 //        }
     }
 }
-    
-    
 
