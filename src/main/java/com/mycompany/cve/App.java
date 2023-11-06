@@ -197,6 +197,14 @@ public class App {
                         ScoreInfo temp = ar[i];
                         ar[i] = ar[j];
                         ar[j] = temp;
+                    } else if (ar[j].exploitabilityScore == pivot.exploitabilityScore) {
+                        if (ar[j].cveId.compareTo(pivot.cveId) < 0) {
+                            i++;
+                            ScoreInfo temp = ar[i];
+                            ar[i] = ar[j];
+                            ar[j] = temp;
+                        }
+
                     }
                 }
             }
@@ -207,6 +215,86 @@ public class App {
 
         return i + 1;
     }
+    //************************************************
+
+    public static void mergeSort(ScoreInfo ar[], int left, int right) {
+        if (left < right) {
+            int middle = left + (right - left) / 2;
+            mergeSort(ar, left, middle);
+            mergeSort(ar, middle + 1, right);
+
+            merging(ar, left, middle, right);
+        }
+    }
+
+    public static void merging(ScoreInfo ar[], int left, int middle, int right) {
+        int i, j, k;
+        int size1 = middle - left + 1;
+        int size2 = right - middle;
+
+        ScoreInfo l[] = new ScoreInfo[size1];
+        ScoreInfo r[] = new ScoreInfo[size2];
+
+        for (i = 0; i < size1; i++) {
+            l[i] = ar[left + i];
+        }
+        for (i = 0; i < size2; i++) {
+            r[i] = ar[middle + 1 + i];
+        }
+
+        i = j = 0;
+        k = left;
+
+        while (i < size1 && j < size2) {
+            if (l[i].baseScore > r[j].baseScore) {
+                ar[k] = r[j];
+                j++;
+            } else {
+                if (l[i].baseScore == r[j].baseScore) {
+                    if (l[i].impactScore == r[j].impactScore) {
+                        if (l[i].exploitabilityScore == r[j].exploitabilityScore) {
+                            if (l[i].cveId.compareTo(r[j].cveId) < 0) {
+                                ar[k] = l[i];
+                                i++;
+                            } else {
+                                ar[k] = r[j];
+                                j++;
+                            }
+                        } else if (l[i].exploitabilityScore > r[j].exploitabilityScore) {
+                            ar[k] = r[j];
+                            j++;
+                        } else {
+                            ar[k] = l[i];
+                            i++;
+                        }
+                    } else if (l[i].impactScore > r[j].impactScore) {
+                        ar[k] = r[j];
+                        j++;
+                    } else {
+                        ar[k] = l[i];
+                        i++;
+                    }
+
+                } else {
+                    ar[k] = l[i];
+                    i++;
+                }
+            }
+            k++;
+        }
+
+        while (i < size1) {
+            ar[k] = l[i];
+            i++;
+            k++;
+        }
+        while (j < size2) {
+            ar[k] = r[j];
+            j++;
+            k++;
+        }
+    }
+
 
     private static void sortScoreInfos(ScoreInfo[] scoreInfos) {
 
@@ -220,6 +308,16 @@ public class App {
         System.out.println("***************");
         System.out.println("***************");
         System.out.println("Sorted Another Array:");
+        for (ScoreInfo scoreInfo : scoreInfos) {
+            System.out.println(scoreInfo);
+        }
+        System.out.println("*****************************");
+        System.out.println("*****************************");
+        System.out.println("*****************************");
+        System.out.println("Merge Sort Started");
+        mergeSort(scoreInfos, 0, scoreInfos.length - 1);
+
+        System.out.println("Sorted Score Infos:");
         for (ScoreInfo scoreInfo : scoreInfos) {
             System.out.println(scoreInfo);
         }
