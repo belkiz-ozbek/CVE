@@ -361,6 +361,21 @@ public class App {
         }
     }
 
+    //insertion sort
+    public static void insertionSort(ScoreInfo ar[]) {
+        int n = ar.length;
+        for (int i = 1; i < n; i++) {
+            ScoreInfo key = ar[i];
+            int j = i - 1;
+
+            while (j >= 0 && ar[j].compareTo(key) > 0) {
+                ar[j + 1] = ar[j];
+                j = j - 1;
+            }
+            ar[j + 1] = key;
+        }
+    }
+
 
     private static void sortScoreInfos(ScoreInfo[] scoreInfos) {
 
@@ -368,10 +383,17 @@ public class App {
         ScoreInfo[] scoreInfosForQuickSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
         ScoreInfo[] scoreInfosForMergeSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
         ScoreInfo[] scoreInfosForHeapSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
-
         ScoreInfo[] scoreInfosForInsertionSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
         ScoreInfo[] scoreInfosForAvlSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
 
+        System.out.println("Insertion Sort Started");
+        long startTimeInsertion = System.currentTimeMillis();
+        insertionSort(scoreInfosForInsertionSort);
+        printResult(scoreInfosForInsertionSort, "Insertion Sort");
+        long endTimeInsertion = System.currentTimeMillis();
+        long elapsedTimeInsertion = endTimeInsertion - startTimeInsertion;
+        System.out.println("Insertion sort için geçen süre: " + elapsedTimeInsertion + " milisaniye");
+        
         System.out.println("AVL Sort Started");
         long startTimeAvl = System.currentTimeMillis();
         AVLTree avlTree = new AVLTree();
