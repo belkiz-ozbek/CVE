@@ -372,23 +372,40 @@ public class App {
         ScoreInfo[] scoreInfosForInsertionSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
         ScoreInfo[] scoreInfosForAvlSort = Arrays.copyOf(scoreInfos, scoreInfos.length);
 
+        System.out.println("AVL Sort Started");
+        long startTimeAvl = System.currentTimeMillis();
         AVLTree avlTree = new AVLTree();
         for (ScoreInfo scoreInfo : scoreInfosForAvlSort) {
             avlTree.insert(scoreInfo);
         }
         avlTree.inOrderTraversal();
+        long endTimeAvl = System.currentTimeMillis();
+        long elapsedTime = endTimeAvl - startTimeAvl;
+        System.out.println("Avl sort için geçen süre: " + elapsedTime + " milisaniye");
 
         System.out.println("Quick Sort Started");
+        long startTimeQuick = System.currentTimeMillis();
         QuickSort(scoreInfosForQuickSort, 0, scoreInfosForQuickSort.length-1);
         printResult(scoreInfosForQuickSort, "Quick Sort ");
+        long endTimeQuick = System.currentTimeMillis();
+        long elapsedTimeQuick = endTimeQuick - startTimeQuick;
+        System.out.println("Quick sort için geçen süre: " + elapsedTimeQuick + " milisaniye");
 
         System.out.println("mergeSort Started");
+        long startTimeMerge = System.currentTimeMillis();
         mergeSort(scoreInfosForMergeSort, 0, scoreInfos.length - 1);
         printResult(scoreInfosForMergeSort, "Merge Sort");
+        long endTimeMerge = System.currentTimeMillis();
+        long elapsedTimeMerge = endTimeMerge - startTimeMerge;
+        System.out.println("Merge sort için geçen süre: " + elapsedTimeMerge + " milisaniye");
 
         System.out.println("Heap Sort Started");
+        long startTimeHeap = System.currentTimeMillis();
         heapSort(scoreInfosForHeapSort);
         printResult(scoreInfosForHeapSort, "Heap Sort");
+        long endTimeHeap = System.currentTimeMillis();
+        long elapsedTimeHeap = endTimeHeap - startTimeHeap;
+        System.out.println("Heap sort için geçen süre: " + elapsedTimeHeap + " milisaniye");
 
     }
 
