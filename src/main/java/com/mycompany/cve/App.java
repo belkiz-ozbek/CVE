@@ -116,7 +116,7 @@ public class App {
 
 
     public static void main(String[] args) {
-        final int NUMBER_CVE = 500;
+        final int NUMBER_CVE = 50_000;
         App app = new App(); // App sınıfından bir nesne oluştur
         CustomArrayList allVulnerabilities = app.new CustomArrayList();
         String firstPartOfURL = "https://services.nvd.nist.gov/rest/json/cves/2.0/?resultsPerPage=1000&startIndex=";
@@ -124,7 +124,7 @@ public class App {
         ScoreInfo[] scoreInfos = new ScoreInfo[NUMBER_CVE];
 
         int totalNumber = 0;
-        for (int i = 0; i < 700; i = i + 1_000) {
+        for (int i = 0; i < 50_500; i = i + 1_000) {
             String completeURL = firstPartOfURL + i;
             try {
                 //String json = getJsonFromUrl(completeURL); // URL adresini buraya ekleyin
